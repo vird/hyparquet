@@ -23,7 +23,7 @@ const CompactType = {
  * @param {DataReader} reader
  * @returns {Record<string, any>}
  */
-export function deserializeTCompactProtocol(reader) {
+function deserializeTCompactProtocol(reader) {
   let lastFid = 0
   /** @type {Record<string, any>} */
   const value = {}
@@ -121,7 +121,7 @@ function readElement(reader, type) {
  * @param {DataReader} reader
  * @returns {number} value
  */
-export function readVarInt(reader) {
+function readVarInt(reader) {
   let result = 0
   let shift = 0
   while (true) {
@@ -173,7 +173,7 @@ function readZigZag(reader) {
  * @param {DataReader} reader
  * @returns {bigint} value
  */
-export function readZigZagBigInt(reader) {
+function readZigZagBigInt(reader) {
   const zigzag = readVarBigInt(reader)
   // convert zigzag to int
   return zigzag >> BigInt(1) ^ -(zigzag & BigInt(1))
@@ -236,7 +236,7 @@ function readCollectionBegin(reader) {
  * @param {number} n
  * @returns {number[]}
  */
-export function toVarInt(n) {
+function toVarInt(n) {
   let idx = 0
   const varInt = []
   while (true) {
@@ -250,3 +250,10 @@ export function toVarInt(n) {
   }
   return varInt
 }
+
+module.exports = {
+  deserializeTCompactProtocol,
+  readVarInt,
+  readZigZagBigInt,
+  toVarInt,
+};

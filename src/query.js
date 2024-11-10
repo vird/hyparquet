@@ -1,5 +1,5 @@
-import { parquetReadObjects } from './hyparquet.js'
-import { parquetMetadataAsync } from './metadata.js'
+const { parquetReadObjects } = require('./hyparquet.js');
+const { parquetMetadataAsync } = require('./metadata.js');
 
 /**
  * Wraps parquetRead with orderBy support.
@@ -10,7 +10,7 @@ import { parquetMetadataAsync } from './metadata.js'
  * @param {ParquetReadOptions & { orderBy?: string }} options
  * @returns {Promise<Record<string, any>[]>}
  */
-export async function parquetQuery(options) {
+async function parquetQuery(options) {
   const { file, rowStart, rowEnd, orderBy } = options
   options.metadata ||= await parquetMetadataAsync(file)
 
@@ -97,3 +97,7 @@ function compare(a, b) {
   if (a > b) return 1
   return 1 // TODO: how to handle nulls?
 }
+
+module.exports = {
+  parquetQuery,
+};

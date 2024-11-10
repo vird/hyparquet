@@ -1,7 +1,14 @@
-import { CompressionCodec, ConvertedType, Encoding, FieldRepetitionType, PageType, ParquetType } from './constants.js'
-import { parseDecimal, parseFloat16 } from './convert.js'
-import { getSchemaPath } from './schema.js'
-import { deserializeTCompactProtocol } from './thrift.js'
+const {
+  CompressionCodec,
+  ConvertedType,
+  Encoding,
+  FieldRepetitionType,
+  PageType,
+  ParquetType,
+} = require('./constants.js');
+const { parseDecimal, parseFloat16 } = require('./convert.js');
+const { getSchemaPath } = require('./schema.js');
+const { deserializeTCompactProtocol } = require('./thrift.js');
 
 /**
  * Read parquet metadata from an async buffer.
@@ -30,7 +37,7 @@ import { deserializeTCompactProtocol } from './thrift.js'
  * @param {number} initialFetchSize initial fetch size in bytes
  * @returns {Promise<FileMetaData>} parquet metadata object
  */
-export async function parquetMetadataAsync(asyncBuffer, initialFetchSize = 1 << 19 /* 512kb */) {
+async function parquetMetadataAsync(asyncBuffer, initialFetchSize = 1 << 19 /* 512kb */) {
   if (!asyncBuffer) throw new Error('parquet file is required')
   if (!(asyncBuffer.byteLength >= 0)) throw new Error('parquet file byteLength is required')
 
@@ -74,7 +81,7 @@ export async function parquetMetadataAsync(asyncBuffer, initialFetchSize = 1 << 
  * @param {ArrayBuffer} arrayBuffer parquet file contents
  * @returns {FileMetaData} parquet metadata object
  */
-export function parquetMetadata(arrayBuffer) {
+function parquetMetadata(arrayBuffer) {
   if (!arrayBuffer) throw new Error('parquet file is required')
   const view = new DataView(arrayBuffer)
 
@@ -192,7 +199,7 @@ export function parquetMetadata(arrayBuffer) {
  * @param {FileMetaData} metadata parquet metadata object
  * @returns {import("./types.d.ts").SchemaTree} tree of schema elements
  */
-export function parquetSchema(metadata) {
+function parquetSchema(metadata) {
   return getSchemaPath(metadata.schema, [])[0]
 }
 
@@ -270,7 +277,7 @@ function convertStats(stats, schema) {
  * @param {SchemaElement} schema
  * @returns {import('./types.d.ts').MinMaxType | undefined}
  */
-export function convertMetadata(value, schema) {
+function convertMetadata(value, schema) {
   const { type, converted_type, logical_type } = schema
   if (value === undefined) return value
   if (type === 'BOOLEAN') return value[0] === 1
@@ -290,3 +297,10 @@ export function convertMetadata(value, schema) {
   // assert(false)
   return value
 }
+
+module.exports = {
+  parquetMetadataAsync,
+  parquetMetadata,
+  parquetSchema,
+  convertMetadata,
+};

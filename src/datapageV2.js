@@ -1,8 +1,8 @@
-import { decompressPage } from './datapage.js'
-import { deltaBinaryUnpack, deltaByteArray, deltaLengthByteArray } from './delta.js'
-import { bitWidth, byteStreamSplit, readRleBitPackedHybrid } from './encoding.js'
-import { readPlain } from './plain.js'
-import { getMaxDefinitionLevel, getMaxRepetitionLevel } from './schema.js'
+const { decompressPage } = require('./datapage.js');
+const { deltaBinaryUnpack, deltaByteArray, deltaLengthByteArray } = require('./delta.js');
+const { bitWidth, byteStreamSplit, readRleBitPackedHybrid } = require('./encoding.js');
+const { readPlain } = require('./plain.js');
+const { getMaxDefinitionLevel, getMaxRepetitionLevel } = require('./schema.js');
 
 /**
  * Read a data page from the given Uint8Array.
@@ -19,7 +19,7 @@ import { getMaxDefinitionLevel, getMaxRepetitionLevel } from './schema.js'
  * @param {Compressors | undefined} compressors
  * @returns {DataPage} definition levels, repetition levels, and array of values
  */
-export function readDataPageV2(compressedBytes, ph, schemaPath, columnMetadata, compressors) {
+function readDataPageV2(compressedBytes, ph, schemaPath, columnMetadata, compressors) {
   const view = new DataView(compressedBytes.buffer, compressedBytes.byteOffset, compressedBytes.byteLength)
   const reader = { view, offset: 0 }
   const { codec, type } = columnMetadata
@@ -89,7 +89,7 @@ export function readDataPageV2(compressedBytes, ph, schemaPath, columnMetadata, 
  * @param {SchemaTree[]} schemaPath
  * @returns {any[]} repetition levels
  */
-export function readRepetitionLevelsV2(reader, daph2, schemaPath) {
+function readRepetitionLevelsV2(reader, daph2, schemaPath) {
   const maxRepetitionLevel = getMaxRepetitionLevel(schemaPath)
   if (!maxRepetitionLevel) return []
 
@@ -115,3 +115,9 @@ function readDefinitionLevelsV2(reader, daph2, schemaPath) {
     return values
   }
 }
+
+module.exports = {
+  readDataPageV2,
+  readRepetitionLevelsV2,
+  readDefinitionLevelsV2,
+};

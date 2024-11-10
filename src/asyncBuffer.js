@@ -1,4 +1,3 @@
-
 /**
  * Returns a cached layer on top of an AsyncBuffer. For caching slices of a file
  * that are read multiple times, possibly over a network.
@@ -7,7 +6,7 @@
  * @param {AsyncBuffer} file file-like object to cache
  * @returns {AsyncBuffer} cached file-like object
  */
-export function cachedAsyncBuffer({ byteLength, slice }) {
+function cachedAsyncBuffer({ byteLength, slice }) {
   const cache = new Map()
   return {
     byteLength,
@@ -52,3 +51,7 @@ function cacheKey(start, end, size) {
     return `${start},${size}`
   }
 }
+
+module.exports = {
+  cachedAsyncBuffer,
+};

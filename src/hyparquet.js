@@ -1,26 +1,35 @@
-export { parquetMetadata, parquetMetadataAsync, parquetSchema } from './metadata.js'
-
-import { parquetRead } from './read.js'
-export { parquetRead }
-
-export { parquetQuery } from './query.js'
-
-export { snappyUncompress } from './snappy.js'
-
-export { asyncBufferFromFile, asyncBufferFromUrl, byteLengthFromUrl, toJson } from './utils.js'
-
-export { cachedAsyncBuffer } from './asyncBuffer.js'
+const { parquetMetadata, parquetMetadataAsync, parquetSchema } = require('./metadata.js');
+const { parquetRead } = require('./read.js');
+const { parquetQuery } = require('./query.js');
+const { snappyUncompress } = require('./snappy.js');
+const { asyncBufferFromFile, asyncBufferFromUrl, byteLengthFromUrl, toJson } = require('./utils.js');
+const { cachedAsyncBuffer } = require('./asyncBuffer.js');
 
 /**
  * @param {import('./hyparquet.js').ParquetReadOptions} options
  * @returns {Promise<Array<Record<string, any>>>}
  */
-export function parquetReadObjects(options) {
+function parquetReadObjects(options) {
   return new Promise((onComplete, reject) => {
     parquetRead({
       rowFormat: 'object',
       ...options,
       onComplete,
-    }).catch(reject)
-  })
+    }).catch(reject);
+  });
 }
+
+module.exports = {
+  parquetMetadata,
+  parquetMetadataAsync,
+  parquetSchema,
+  parquetRead,
+  parquetQuery,
+  snappyUncompress,
+  asyncBufferFromFile,
+  asyncBufferFromUrl,
+  byteLengthFromUrl,
+  toJson,
+  cachedAsyncBuffer,
+  parquetReadObjects,
+};

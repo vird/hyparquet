@@ -1,4 +1,4 @@
-import { readVarInt, readZigZagBigInt } from './thrift.js'
+const { readVarInt, readZigZagBigInt } = require('./thrift.js');
 
 /**
  * @typedef {import('./types.d.ts').DataReader} DataReader
@@ -6,7 +6,7 @@ import { readVarInt, readZigZagBigInt } from './thrift.js'
  * @param {number} count number of values to read
  * @param {Int32Array | BigInt64Array} output
  */
-export function deltaBinaryUnpack(reader, count, output) {
+function deltaBinaryUnpack(reader, count, output) {
   const int32 = output instanceof Int32Array
   const blockSize = readVarInt(reader)
   const miniblockPerBlock = readVarInt(reader)
@@ -66,7 +66,7 @@ export function deltaBinaryUnpack(reader, count, output) {
  * @param {number} count
  * @param {Uint8Array[]} output
  */
-export function deltaLengthByteArray(reader, count, output) {
+function deltaLengthByteArray(reader, count, output) {
   const lengths = new Int32Array(count)
   deltaBinaryUnpack(reader, count, lengths)
   for (let i = 0; i < count; i++) {
@@ -80,7 +80,7 @@ export function deltaLengthByteArray(reader, count, output) {
  * @param {number} count
  * @param {Uint8Array[]} output
  */
-export function deltaByteArray(reader, count, output) {
+function deltaByteArray(reader, count, output) {
   const prefixData = new Int32Array(count)
   deltaBinaryUnpack(reader, count, prefixData)
   const suffixData = new Int32Array(count)
@@ -99,3 +99,9 @@ export function deltaByteArray(reader, count, output) {
     reader.offset += suffixData[i]
   }
 }
+
+module.exports = {
+  deltaBinaryUnpack,
+  deltaLengthByteArray,
+  deltaByteArray,
+};

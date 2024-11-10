@@ -17,7 +17,6 @@
   "files": [
     "src"
   ],
-  "type": "module",
   "types": "src/hyparquet.d.ts",
   "scripts": {
     "coverage": "vitest run --coverage --coverage.include=src",

@@ -1,5 +1,5 @@
-import { Encoding, PageType } from './constants.js'
-import { deserializeTCompactProtocol } from './thrift.js'
+const { Encoding, PageType } = require('./constants.js');
+const { deserializeTCompactProtocol } = require('./thrift.js');
 
 /**
  * Read parquet header from a buffer.
@@ -9,7 +9,7 @@ import { deserializeTCompactProtocol } from './thrift.js'
  * @param {DataReader} reader - parquet file reader
  * @returns {PageHeader} metadata object and bytes read
  */
-export function parquetHeader(reader) {
+function parquetHeader(reader) {
   const header = deserializeTCompactProtocol(reader)
 
   // Parse parquet header from thrift data
@@ -59,3 +59,7 @@ export function parquetHeader(reader) {
     data_page_header_v2,
   }
 }
+
+module.exports = {
+  parquetHeader,
+};

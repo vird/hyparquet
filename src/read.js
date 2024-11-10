@@ -1,8 +1,8 @@
-import { assembleNested } from './assemble.js'
-import { getColumnRange, readColumn } from './column.js'
-import { parquetMetadataAsync } from './metadata.js'
-import { getSchemaPath } from './schema.js'
-import { concat } from './utils.js'
+const { assembleNested } = require('./assemble.js');
+const { getColumnRange, readColumn } = require('./column.js');
+const { parquetMetadataAsync } = require('./metadata.js');
+const { getSchemaPath } = require('./schema.js');
+const { concat } = require('./utils.js');
 
 /**
  * Read parquet data rows from a file-like object.
@@ -31,7 +31,7 @@ import { concat } from './utils.js'
  * @param {Compressors} [options.compressors] custom decompressors
  * @returns {Promise<void>} resolves when all requested rows and columns are parsed
  */
-export async function parquetRead(options) {
+async function parquetRead(options) {
   if (!options.file) throw new Error('parquet file is required')
 
   // load metadata if not provided
@@ -83,7 +83,7 @@ export async function parquetRead(options) {
  * @param {number} [rowLimit] max rows to read from this group
  * @returns {Promise<any[][]>} resolves to row data
  */
-export async function readRowGroup(options, rowGroup, groupStart, rowLimit) {
+async function readRowGroup(options, rowGroup, groupStart, rowLimit) {
   const { file, metadata, columns } = options
   if (!metadata) throw new Error('parquet metadata not found')
   if (rowLimit === undefined || rowLimit > rowGroup.num_rows) rowLimit = Number(rowGroup.num_rows)
@@ -231,3 +231,8 @@ function getSubcolumns(schema, output = []) {
   }
   return output
 }
+
+module.exports = {
+  parquetRead,
+  readRowGroup,
+};

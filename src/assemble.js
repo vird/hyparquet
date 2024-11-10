@@ -1,4 +1,4 @@
-import { isListLike, isMapLike } from './schema.js'
+const { isListLike, isMapLike } = require('./schema.js');
 
 /**
  * Dremel-assembly of arrays of values into lists
@@ -16,7 +16,7 @@ import { isListLike, isMapLike } from './schema.js'
  * @param {number} maxDefinitionLevel definition level that corresponds to non-null
  * @returns {any[]}
  */
-export function assembleLists(
+function assembleLists(
   output, definitionLevels, repetitionLevels, values, repetitionPath, maxDefinitionLevel
 ) {
   const n = definitionLevels?.length || repetitionLevels.length
@@ -109,7 +109,7 @@ export function assembleLists(
  * @param {SchemaTree} schema top-level schema element
  * @param {number} [depth] depth of nested structure
  */
-export function assembleNested(subcolumnData, schema, depth = 0) {
+function assembleNested(subcolumnData, schema, depth = 0) {
   const path = schema.path.join('.')
   const optional = schema.element.repetition_type === 'OPTIONAL'
   const nextDepth = optional ? depth + 1 : depth
@@ -248,3 +248,8 @@ function invertStruct(struct, depth) {
   }
   return out
 }
+
+module.exports = {
+  assembleLists,
+  assembleNested,
+};

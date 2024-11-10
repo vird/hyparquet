@@ -1,4 +1,4 @@
-import { readVarInt } from './thrift.js'
+const { readVarInt, readZigZagBigInt } = require('./thrift.js');
 
 /**
  * Minimum bits needed to store value.
@@ -6,7 +6,7 @@ import { readVarInt } from './thrift.js'
  * @param {number} value
  * @returns {number}
  */
-export function bitWidth(value) {
+function bitWidth(value) {
   return 32 - Math.clz32(value)
 }
 
@@ -22,7 +22,7 @@ export function bitWidth(value) {
  * @param {number} length - length of the encoded data
  * @param {DecodedArray} output
  */
-export function readRleBitPackedHybrid(reader, width, length, output) {
+function readRleBitPackedHybrid(reader, width, length, output) {
   if (!length) {
     // length = reader.view.getUint32(reader.offset, true)
     reader.offset += 4
@@ -124,7 +124,7 @@ function readBitPacked(reader, header, bitWidth, output, seen) {
  * @param {number | undefined} typeLength
  * @returns {DecodedArray}
  */
-export function byteStreamSplit(reader, count, type, typeLength) {
+function byteStreamSplit(reader, count, type, typeLength) {
   const width = byteWidth(type, typeLength)
   const bytes = new Uint8Array(count * width)
   for (let b = 0; b < width; b++) {
@@ -168,3 +168,9 @@ function byteWidth(type, typeLength) {
     throw new Error(`parquet unsupported type: ${type}`)
   }
 }
+
+module.exports = {
+  bitWidth,
+  readRleBitPackedHybrid,
+  byteStreamSplit,
+};

@@ -12,7 +12,7 @@ const dayMillis = 86400000 // 1 day in milliseconds
  * @param {boolean | undefined} utf8 decode bytes as utf8?
  * @returns {DecodedArray} series of rich types
  */
-export function convertWithDictionary(data, dictionary, schemaElement, encoding, utf8 = true) {
+function convertWithDictionary(data, dictionary, schemaElement, encoding, utf8 = true) {
   if (dictionary && encoding.endsWith('_DICTIONARY')) {
     // convert dictionary
     dictionary = convert(dictionary, schemaElement, utf8)
@@ -38,7 +38,7 @@ export function convertWithDictionary(data, dictionary, schemaElement, encoding,
  * @param {boolean | undefined} utf8 decode bytes as utf8?
  * @returns {DecodedArray} series of rich types
  */
-export function convert(data, schemaElement, utf8 = true) {
+function convert(data, schemaElement, utf8 = true) {
   const ctype = schemaElement.converted_type
   if (ctype === 'DECIMAL') {
     const scale = schemaElement.scale || 0
@@ -123,7 +123,7 @@ export function convert(data, schemaElement, utf8 = true) {
  * @param {Uint8Array} bytes
  * @returns {number}
  */
-export function parseDecimal(bytes) {
+function parseDecimal(bytes) {
   // TODO: handle signed
   let value = 0
   for (const byte of bytes) {
@@ -147,7 +147,7 @@ function parseInt96Date(value) {
  * @param {Uint8Array | undefined} bytes
  * @returns {number | undefined}
  */
-export function parseFloat16(bytes) {
+function parseFloat16(bytes) {
   if (!bytes) return undefined
   const int16 = bytes[1] << 8 | bytes[0]
   const sign = int16 >> 15 ? -1 : 1
@@ -157,3 +157,10 @@ export function parseFloat16(bytes) {
   if (exp === 0x1f) return frac ? NaN : sign * Infinity
   return sign * Math.pow(2, exp - 15) * (1 + frac / 1024)
 }
+
+module.exports = {
+  convertWithDictionary,
+  convert,
+  parseDecimal,
+  parseFloat16,
+};

@@ -33,7 +33,7 @@ function schemaTree(schema, rootIndex, path) {
  * @param {string[]} name path to the element
  * @returns {SchemaTree[]} list of schema elements
  */
-export function getSchemaPath(schema, name) {
+function getSchemaPath(schema, name) {
   let tree = schemaTree(schema, 0, [])
   const path = [tree]
   for (const part of name) {
@@ -51,7 +51,7 @@ export function getSchemaPath(schema, name) {
  * @param {SchemaTree[]} schemaPath
  * @returns {number} max repetition level
  */
-export function getMaxRepetitionLevel(schemaPath) {
+function getMaxRepetitionLevel(schemaPath) {
   let maxLevel = 0
   for (const { element } of schemaPath) {
     if (element.repetition_type === 'REPEATED') {
@@ -67,7 +67,7 @@ export function getMaxRepetitionLevel(schemaPath) {
  * @param {SchemaTree[]} schemaPath
  * @returns {number} max definition level
  */
-export function getMaxDefinitionLevel(schemaPath) {
+function getMaxDefinitionLevel(schemaPath) {
   let maxLevel = 0
   for (const { element } of schemaPath.slice(1)) {
     if (element.repetition_type !== 'REQUIRED') {
@@ -83,7 +83,7 @@ export function getMaxDefinitionLevel(schemaPath) {
  * @param {SchemaTree} schema
  * @returns {boolean} true if list-like
  */
-export function isListLike(schema) {
+function isListLike(schema) {
   if (!schema) return false
   if (schema.element.converted_type !== 'LIST') return false
   if (schema.children.length > 1) return false
@@ -101,7 +101,7 @@ export function isListLike(schema) {
  * @param {SchemaTree} schema
  * @returns {boolean} true if map-like
  */
-export function isMapLike(schema) {
+function isMapLike(schema) {
   if (!schema) return false
   if (schema.element.converted_type !== 'MAP') return false
   if (schema.children.length > 1) return false
@@ -118,3 +118,11 @@ export function isMapLike(schema) {
 
   return true
 }
+
+module.exports = {
+  getSchemaPath,
+  getMaxRepetitionLevel,
+  getMaxDefinitionLevel,
+  isListLike,
+  isMapLike,
+};

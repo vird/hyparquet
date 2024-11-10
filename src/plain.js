@@ -10,7 +10,7 @@
  * @param {number | undefined} fixedLength - length of each fixed length byte array
  * @returns {DecodedArray} array of values
  */
-export function readPlain(reader, type, count, fixedLength) {
+function readPlain(reader, type, count, fixedLength) {
   if (count === 0) return []
   if (type === 'BOOLEAN') {
     return readPlainBoolean(reader, count)
@@ -180,3 +180,7 @@ function align(buffer, offset, size) {
   new Uint8Array(aligned).set(new Uint8Array(buffer, offset, size))
   return aligned
 }
+
+module.exports = {
+  readPlain,
+};

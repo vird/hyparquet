@@ -1,6 +1,6 @@
-import { BoundaryOrder } from './constants.js'
-import { convertMetadata } from './metadata.js'
-import { deserializeTCompactProtocol } from './thrift.js'
+const { BoundaryOrder } = require('./constants.js');
+const { convertMetadata } = require('./metadata.js');
+const { deserializeTCompactProtocol } = require('./thrift.js');
 
 /**
  * @typedef {import('./types.d.ts').DataReader} DataReader
@@ -8,7 +8,7 @@ import { deserializeTCompactProtocol } from './thrift.js'
  * @param {import('./types.d.ts').SchemaElement} schema
  * @returns {import('./types.d.ts').ColumnIndex}
  */
-export function readColumnIndex(reader, schema) {
+function readColumnIndex(reader, schema) {
   const thrift = deserializeTCompactProtocol(reader)
   return {
     null_pages: thrift.field_1,
@@ -25,7 +25,7 @@ export function readColumnIndex(reader, schema) {
  * @param {DataReader} reader
  * @returns {import('./types.d.ts').OffsetIndex}
  */
-export function readOffsetIndex(reader) {
+function readOffsetIndex(reader) {
   const thrift = deserializeTCompactProtocol(reader)
   return {
     page_locations: thrift.field_1.map(pageLocation),
@@ -44,3 +44,8 @@ function pageLocation(loc) {
     first_row_index: loc.field_3,
   }
 }
+
+module.exports = {
+  readColumnIndex,
+  readOffsetIndex,
+};

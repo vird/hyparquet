@@ -45,7 +45,7 @@ function selfCopyBytes(array, pos, offset, length) {
  * @param {Uint8Array} output output buffer
  * @returns {void}
  */
-export function snappyUncompress(input, output) {
+function snappyUncompress(input, output) {
   const inputLength = input.byteLength
   const outputLength = output.byteLength
   let pos = 0
@@ -142,3 +142,7 @@ export function snappyUncompress(input, output) {
 
   if (outPos !== outputLength) throw new Error('premature end of input')
 }
+
+module.exports = {
+  snappyUncompress,
+};

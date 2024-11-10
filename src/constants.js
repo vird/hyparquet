@@ -1,5 +1,5 @@
 /** @type {import('./types.js').ParquetType[]} */
-export const ParquetType = [
+const ParquetType = [
   'BOOLEAN',
   'INT32',
   'INT64',
@@ -10,7 +10,7 @@ export const ParquetType = [
   'FIXED_LEN_BYTE_ARRAY',
 ]
 
-export const Encoding = [
+const Encoding = [
   'PLAIN',
   undefined,
   'PLAIN_DICTIONARY',
@@ -23,14 +23,14 @@ export const Encoding = [
   'BYTE_STREAM_SPLIT',
 ]
 
-export const FieldRepetitionType = [
+const FieldRepetitionType = [
   'REQUIRED',
   'OPTIONAL',
   'REPEATED',
 ]
 
 /** @type {import('./types.js').ConvertedType[]} */
-export const ConvertedType = [
+const ConvertedType = [
   'UTF8',
   'MAP',
   'MAP_KEY_VALUE',
@@ -56,7 +56,7 @@ export const ConvertedType = [
 ]
 
 /** @type {import('./types.js').LogicalTypeType[]} */
-export const logicalTypeType = [
+const logicalTypeType = [
   'NULL',
   'STRING',
   'MAP',
@@ -74,7 +74,7 @@ export const logicalTypeType = [
   'UUID',
 ]
 
-export const CompressionCodec = [
+const CompressionCodec = [
   'UNCOMPRESSED',
   'SNAPPY',
   'GZIP',
@@ -86,7 +86,7 @@ export const CompressionCodec = [
 ]
 
 /** @type {import('./types.js').PageType[]} */
-export const PageType = [
+const PageType = [
   'DATA_PAGE',
   'INDEX_PAGE',
   'DICTIONARY_PAGE',
@@ -94,8 +94,19 @@ export const PageType = [
 ]
 
 /** @type {import('./types.js').BoundaryOrder[]} */
-export const BoundaryOrder = [
+const BoundaryOrder = [
   'UNORDERED',
   'ASCENDING',
   'DESCENDING',
 ]
+
+module.exports = {
+  ParquetType,
+  Encoding,
+  FieldRepetitionType,
+  ConvertedType,
+  logicalTypeType,
+  CompressionCodec,
+  PageType,
+  BoundaryOrder,
+};

@@ -1,10 +1,10 @@
-import { assembleLists } from './assemble.js'
-import { convertWithDictionary } from './convert.js'
-import { decompressPage, readDataPage, readDictionaryPage } from './datapage.js'
-import { readDataPageV2 } from './datapageV2.js'
-import { parquetHeader } from './header.js'
-import { getMaxDefinitionLevel } from './schema.js'
-import { concat } from './utils.js'
+const { assembleLists } = require('./assemble.js');
+const { convertWithDictionary } = require('./convert.js');
+const { decompressPage, readDataPage, readDictionaryPage } = require('./datapage.js');
+const { readDataPageV2 } = require('./datapageV2.js');
+const { parquetHeader } = require('./header.js');
+const { getMaxDefinitionLevel } = require('./schema.js');
+const { concat } = require('./utils.js');
 
 /**
  * Parse column data from a buffer.
@@ -18,7 +18,7 @@ import { concat } from './utils.js'
  * @param {import('./hyparquet.js').ParquetReadOptions} options read options
  * @returns {any[]} array of values
  */
-export function readColumn(reader, rowLimit, columnMetadata, schemaPath, { compressors, utf8 }) {
+function readColumn(reader, rowLimit, columnMetadata, schemaPath, { compressors, utf8 }) {
   const { element } = schemaPath[schemaPath.length - 1]
   /** @type {DecodedArray | undefined} */
   let dictionary = undefined
@@ -110,10 +110,15 @@ export function readColumn(reader, rowLimit, columnMetadata, schemaPath, { compr
  * @param {ColumnMetaData} columnMetadata
  * @returns {[bigint, bigint]} byte offset range
  */
-export function getColumnRange({ dictionary_page_offset, data_page_offset, total_compressed_size }) {
+function getColumnRange({ dictionary_page_offset, data_page_offset, total_compressed_size }) {
   let columnOffset = dictionary_page_offset
   if (!columnOffset || data_page_offset < columnOffset) {
     columnOffset = data_page_offset
   }
   return [columnOffset, columnOffset + total_compressed_size]
 }
+
+module.exports = {
+  readColumn,
+  getColumnRange,
+};

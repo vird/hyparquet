@@ -4,7 +4,7 @@
  * @param {any} obj object to convert
  * @returns {unknown} converted object
  */
-export function toJson(obj) {
+function toJson(obj) {
   if (obj === undefined) return null
   if (typeof obj === 'bigint') return Number(obj)
   if (Array.isArray(obj)) return obj.map(toJson)
@@ -29,7 +29,7 @@ export function toJson(obj) {
  * @param {any[]} aaa first array
  * @param {DecodedArray} bbb second array
  */
-export function concat(aaa, bbb) {
+function concat(aaa, bbb) {
   const chunk = 10000
   for (let i = 0; i < bbb.length; i += chunk) {
     aaa.push(...bbb.slice(i, i + chunk))
@@ -43,7 +43,7 @@ export function concat(aaa, bbb) {
  * @param {RequestInit} [requestInit] fetch options
  * @returns {Promise<number>}
  */
-export async function byteLengthFromUrl(url, requestInit) {
+async function byteLengthFromUrl(url, requestInit) {
   return await fetch(url, { ...requestInit, method: 'HEAD' })
     .then(res => {
       if (!res.ok) throw new Error(`fetch head failed ${res.status}`)
@@ -63,7 +63,7 @@ export async function byteLengthFromUrl(url, requestInit) {
  * @param {RequestInit} [options.requestInit]
  * @returns {Promise<AsyncBuffer>}
  */
-export async function asyncBufferFromUrl({ url, byteLength, requestInit }) {
+async function asyncBufferFromUrl({ url, byteLength, requestInit }) {
   // byte length from HEAD request
   byteLength ||= await byteLengthFromUrl(url, requestInit)
   const init = requestInit || {}
@@ -87,7 +87,7 @@ export async function asyncBufferFromUrl({ url, byteLength, requestInit }) {
  * @param {string} filename
  * @returns {Promise<AsyncBuffer>}
  */
-export async function asyncBufferFromFile(filename) {
+async function asyncBufferFromFile(filename) {
   const fsPackage = 'fs' // webpack no include
   const fs = await import(fsPackage)
   const stat = await fs.promises.stat(filename)
@@ -119,3 +119,11 @@ function readStreamToArrayBuffer(input) {
     input.on('error', reject)
   })
 }
+
+module.exports = {
+  toJson,
+  concat,
+  byteLengthFromUrl,
+  asyncBufferFromUrl,
+  asyncBufferFromFile,
+};

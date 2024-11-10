@@ -1,7 +1,7 @@
-import { bitWidth, byteStreamSplit, readRleBitPackedHybrid } from './encoding.js'
-import { readPlain } from './plain.js'
-import { getMaxDefinitionLevel, getMaxRepetitionLevel } from './schema.js'
-import { snappyUncompress } from './snappy.js'
+const { bitWidth, byteStreamSplit, readRleBitPackedHybrid } = require('./encoding.js');
+const { readPlain } = require('./plain.js');
+const { getMaxDefinitionLevel, getMaxRepetitionLevel } = require('./schema.js');
+const { snappyUncompress } = require('./snappy.js');
 
 /**
  * Read a data page from uncompressed reader.
@@ -17,7 +17,7 @@ import { snappyUncompress } from './snappy.js'
  * @param {ColumnMetaData} columnMetadata
  * @returns {DataPage} definition levels, repetition levels, and array of values
  */
-export function readDataPage(bytes, daph, schemaPath, { type }) {
+function readDataPage(bytes, daph, schemaPath, { type }) {
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
   const reader = { view, offset: 0 }
   /** @type {DecodedArray} */
@@ -63,7 +63,7 @@ export function readDataPage(bytes, daph, schemaPath, { type }) {
  * @param {number | undefined} typeLength - type_length from schema
  * @returns {DecodedArray}
  */
-export function readDictionaryPage(bytes, diph, columnMetadata, typeLength) {
+function readDictionaryPage(bytes, diph, columnMetadata, typeLength) {
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
   const reader = { view, offset: 0 }
   return readPlain(reader, columnMetadata.type, diph.num_values, typeLength)
@@ -118,7 +118,7 @@ function readDefinitionLevels(reader, daph, schemaPath) {
  * @param {import('./types.js').Compressors | undefined} compressors
  * @returns {Uint8Array}
  */
-export function decompressPage(compressedBytes, uncompressed_page_size, codec, compressors) {
+function decompressPage(compressedBytes, uncompressed_page_size, codec, compressors) {
   /** @type {Uint8Array} */
   let page
   const customDecompressor = compressors?.[codec]
@@ -137,3 +137,9 @@ export function decompressPage(compressedBytes, uncompressed_page_size, codec, c
   }
   return page
 }
+
+module.exports = {
+  readDataPage,
+  readDictionaryPage,
+  decompressPage,
+};
